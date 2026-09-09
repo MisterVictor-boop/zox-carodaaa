@@ -1,21 +1,16 @@
 (function(){
-function zoxAgeOk(){
-try{ return localStorage.getItem('zox_age_ok') === '1'; }catch(e){ return false; }
+function zoxVipOk(){
+try{ return localStorage.getItem('zox_vip_dob_ok') === '1'; }catch(e){ return false; }
 }
-function zoxSetAgeOk(){
-try{ localStorage.setItem('zox_age_ok', '1'); }catch(e){}
+function zoxSetVipOk(){
+try{ localStorage.setItem('zox_vip_dob_ok', '1'); }catch(e){}
 }
 function init(){
 var gate = document.getElementById('zox-gate');
 var enterBtn = document.getElementById('zox-enter-btn');
 var page = document.getElementById('zox-page');
 if (!gate || !enterBtn) return;
-if (zoxAgeOk()){
-gate.setAttribute('hidden', '');
-gate.style.display = 'none';
-}
 enterBtn.addEventListener('click', function(){
-zoxSetAgeOk();
 gate.setAttribute('hidden', '');
 gate.style.display = 'none';
 if (page && page.focus) page.focus();
@@ -149,7 +144,7 @@ if (!link || !gate || !form || !dob || !cancel || !error) return;
 var target = link.getAttribute('href');
 link.addEventListener('click', function(e){
 e.preventDefault();
-if (zoxAgeOk()){
+if (zoxVipOk()){
 window.open(target, '_blank', 'noopener');
 return;
 }
@@ -181,7 +176,7 @@ setTimeout(function(){ window.location.href = 'https://www.google.com'; }, 150);
 return;
 }
 gate.setAttribute('hidden', '');
-zoxSetAgeOk();
+zoxSetVipOk();
 window.open(target, '_blank', 'noopener');
 });
 }
@@ -197,7 +192,6 @@ initVipGate();
 initMusic();
 }
 window.zoxEnterSite = function(){
-zoxSetAgeOk();
 var gate = document.getElementById('zox-gate');
 if (gate) { gate.setAttribute('hidden', ''); gate.style.display = 'none'; }
 startMusic();
