@@ -61,38 +61,21 @@ osc.stop(now + dur + 0.05);
 wobble.stop(now + dur + 0.05);
 }catch(e){ /* Web Audio unavailable — visual gag still plays */ }
 }
-var ytPlayer = null, ytReady = false, ytFailed = false, ytStopTimer = null, ytPlaying = false;
-window.onYouTubeIframeAPIReady = function(){
+var fartAudio = new Audio('https://cdn.jsdelivr.net/gh/MisterVictor-boop/zox-carodaaa@main/fart.mp3');
+fartAudio.preload = 'auto';
+function playFart(){
 try{
-ytPlayer = new YT.Player('zox-yt-player', {
-height: '2', width: '2',
-videoId: 'Q_9VMaX61nI',
-playerVars: { autoplay: 0, controls: 0, disablekb: 1, modestbranding: 1, rel: 0, fs: 0, playsinline: 1 },
-events: {
-onReady: function(){ ytReady = true; },
-onError: function(){ ytFailed = true; },
-onStateChange: function(e){ ytPlaying = (e.data === YT.PlayerState.PLAYING); }
-}
-});
-}catch(e){ ytFailed = true; }
-};
-function playYtToot(cb){
-if (ytFailed || !ytReady || !ytPlayer) { cb(false); return; }
-try{
-ytPlaying = false;
-ytPlayer.seekTo(0, true);
-ytPlayer.playVideo();
-clearTimeout(ytStopTimer);
-ytStopTimer = setTimeout(function(){ try{ ytPlayer.pauseVideo(); }catch(e){} }, 6000);
-setTimeout(function(){ cb(ytPlaying); }, 250);
-}catch(e){ cb(false); }
+fartAudio.currentTime = 0;
+var p = fartAudio.play();
+if (p && p.catch) { p.catch(function(){ playToot(); }); }
+}catch(e){ playToot(); }
 }
 function tootAt(photo, wrap){
 photo.classList.remove('zox-shaking');
 void photo.offsetWidth;
 photo.classList.add('zox-shaking');
 unlockAudio();
-playYtToot(function(worked){ if (!worked) playToot(); });
+playFart();
 var puff = document.createElement('span');
 puff.className = 'zox-toot';
 puff.textContent = '💨';
