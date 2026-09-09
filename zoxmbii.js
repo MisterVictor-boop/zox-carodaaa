@@ -19,6 +19,7 @@ zoxSetAgeOk();
 gate.setAttribute('hidden', '');
 gate.style.display = 'none';
 if (page && page.focus) page.focus();
+startMusic();
 });
 }
 var audioCtx = null;
@@ -69,7 +70,7 @@ try{ localStorage.setItem('zox_music_muted', v ? '1' : '0'); }catch(e){}
 }
 var bgMusic = new Audio('https://cdn.jsdelivr.net/gh/MisterVictor-boop/zox-carodaaa@main/Romantic%20-%20Mannequin%20Pussy.mp3');
 bgMusic.loop = true;
-bgMusic.volume = 0.35;
+bgMusic.volume = 0.10;
 bgMusic.muted = zoxMusicMuted();
 var musicStarted = false;
 function startMusic(){
@@ -199,5 +200,6 @@ window.zoxEnterSite = function(){
 zoxSetAgeOk();
 var gate = document.getElementById('zox-gate');
 if (gate) { gate.setAttribute('hidden', ''); gate.style.display = 'none'; }
+startMusic();
 };
 })();
