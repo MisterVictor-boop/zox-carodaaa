@@ -61,6 +61,47 @@ osc.stop(now + dur + 0.05);
 wobble.stop(now + dur + 0.05);
 }catch(e){ /* Web Audio unavailable — visual gag still plays */ }
 }
+function zoxMusicMuted(){
+try{ return localStorage.getItem('zox_music_muted') === '1'; }catch(e){ return false; }
+}
+function zoxSetMusicMuted(v){
+try{ localStorage.setItem('zox_music_muted', v ? '1' : '0'); }catch(e){}
+}
+var bgMusic = new Audio('https://cdn.jsdelivr.net/gh/MisterVictor-boop/zox-carodaaa@main/Romantic%20-%20Mannequin%20Pussy.mp3');
+bgMusic.loop = true;
+bgMusic.volume = 0.35;
+bgMusic.muted = zoxMusicMuted();
+var musicStarted = false;
+function startMusic(){
+if (musicStarted) return;
+musicStarted = true;
+bgMusic.play().catch(function(){ musicStarted = false; });
+}
+function initMusic(){
+var btn = document.getElementById('zox-mute-btn');
+function tryStart(){
+startMusic();
+document.removeEventListener('click', tryStart);
+document.removeEventListener('keydown', tryStart);
+document.removeEventListener('touchend', tryStart);
+}
+document.addEventListener('click', tryStart);
+document.addEventListener('keydown', tryStart);
+document.addEventListener('touchend', tryStart);
+if (!btn) return;
+function render(){
+btn.textContent = bgMusic.muted ? '🔇' : '🔊';
+btn.setAttribute('aria-pressed', String(bgMusic.muted));
+btn.setAttribute('aria-label', bgMusic.muted ? 'Unmute background music' : 'Mute background music');
+}
+render();
+btn.addEventListener('click', function(){
+bgMusic.muted = !bgMusic.muted;
+zoxSetMusicMuted(bgMusic.muted);
+render();
+startMusic();
+});
+}
 var fartAudio = new Audio('https://cdn.jsdelivr.net/gh/MisterVictor-boop/zox-carodaaa@main/fart.mp3');
 fartAudio.preload = 'auto';
 function playFart(){
@@ -147,10 +188,12 @@ if (document.readyState === 'loading') {
 document.addEventListener('DOMContentLoaded', init);
 document.addEventListener('DOMContentLoaded', initToot);
 document.addEventListener('DOMContentLoaded', initVipGate);
+document.addEventListener('DOMContentLoaded', initMusic);
 } else {
 init();
 initToot();
 initVipGate();
+initMusic();
 }
 window.zoxEnterSite = function(){
 zoxSetAgeOk();
