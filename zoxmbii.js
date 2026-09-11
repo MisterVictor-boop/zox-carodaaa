@@ -191,17 +191,21 @@ zoxSetVipOk();
 window.open(target, '_blank', 'noopener');
 });
 }
-if (document.readyState === 'loading') {
-document.addEventListener('DOMContentLoaded', init);
-document.addEventListener('DOMContentLoaded', initToot);
-document.addEventListener('DOMContentLoaded', initVipGate);
-document.addEventListener('DOMContentLoaded', initMusic);
-} else {
-init();
-initToot();
-initVipGate();
-initMusic();
+var zoxInitialized = false;
+function initAll(){
+if (zoxInitialized) return;
+zoxInitialized = true;
+try{ init(); }catch(e){}
+try{ initToot(); }catch(e){}
+try{ initVipGate(); }catch(e){}
+try{ initMusic(); }catch(e){}
 }
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', initAll);
+} else {
+initAll();
+}
+window.addEventListener('load', initAll);
 window.zoxEnterSite = function(){
 zoxSetAgeOk();
 var gate = document.getElementById('zox-gate');
