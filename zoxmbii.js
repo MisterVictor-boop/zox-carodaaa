@@ -1,10 +1,4 @@
 (function(){
-function zoxAgeOk(){
-try{ return localStorage.getItem('zox_age_ok') === '1'; }catch(e){ return false; }
-}
-function zoxSetAgeOk(){
-try{ localStorage.setItem('zox_age_ok', '1'); }catch(e){}
-}
 function zoxVipOk(){
 try{ return localStorage.getItem('zox_vip_dob_ok') === '1'; }catch(e){ return false; }
 }
@@ -16,12 +10,7 @@ var gate = document.getElementById('zox-gate');
 var enterBtn = document.getElementById('zox-enter-btn');
 var page = document.getElementById('zox-page');
 if (!gate || !enterBtn) return;
-if (zoxAgeOk()){
-gate.setAttribute('hidden', '');
-gate.style.display = 'none';
-}
 enterBtn.addEventListener('click', function(){
-zoxSetAgeOk();
 gate.setAttribute('hidden', '');
 gate.style.display = 'none';
 if (page && page.focus) page.focus();
@@ -207,7 +196,6 @@ initAll();
 }
 window.addEventListener('load', initAll);
 window.zoxEnterSite = function(){
-zoxSetAgeOk();
 var gate = document.getElementById('zox-gate');
 if (gate) { gate.setAttribute('hidden', ''); gate.style.display = 'none'; }
 startMusic();
